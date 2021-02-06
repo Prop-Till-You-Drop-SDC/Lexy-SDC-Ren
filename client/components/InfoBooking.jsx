@@ -28,7 +28,7 @@ class InfoBooking extends React.Component {
 
     let config = {
       method: 'get',
-      url: 'http://ec2-52-87-237-8.compute-1.amazonaws.com:3001/lodge/?id=1000',
+      url: '/lodge/?id=1000',
       headers: { }
     };
 
