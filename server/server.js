@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -9,18 +7,18 @@ const db = require('./database');
 
 const app = express();
 
-app.use(compression())
+app.use(compression());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(cors({ origin: process.env.PROXY_ORIGIN }));
+app.use(cors());
 
 // app.use(express.static(__dirname + '/../client/public'));
 app.use('/', express.static(`${__dirname}/../client/public`));
 app.use('/bundle', cors(), express.static(`${__dirname}/../client/public/bundle.js`));
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
 app.get('/lodge', cors(), (req, res) => {
   console.log(`req.query.id ${req.query.id}`);
