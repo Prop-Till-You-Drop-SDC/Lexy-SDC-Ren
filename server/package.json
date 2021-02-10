@@ -7,8 +7,10 @@
     "lint": "./node_modules/.bin/eslint",
     "start:dev": "nodemon server.js",
     "start": "node server.js",
-    "seed-db": "node database/seed.js",
-    "test": "jest"
+    "seed-csv": "node --max-old-space-size=7168 ./database/seed_csv.js",
+    "seed-json": "node --max-old-space-size=7168 ./database/seed_json.js",
+    "test": "jest",
+    "seed-mongo": "mongoimport -d 'scareBnb'  -c 'lodgings' --drop --file './generated_data/lodgings.json' --jsonArray && mongoimport -d 'scareBnb'  -c 'lodgings' --file './generated_data/lodgings2.json' --jsonArray && mongoimport -d 'scareBnb'  -c 'hosts' --drop --file './generated_data/hosts.json' --jsonArray && mongoimport -d 'scareBnb'  -c 'hosts' --file './generated_data/hosts2.json' --jsonArray && mongoimport -d 'scareBnb'  -c 'reservations' --drop --file './generated_data/reservations.json' --jsonArray && mongoimport -d 'scareBnb'  -c 'reservations' --file './generated_data/reservations2.json' --jsonArray"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +21,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "faker": "^5.3.1",
+    "mongo": "^0.1.0",
+    "mongoose": "^5.11.15",
     "mysql": "^2.18.1"
   },
   "devDependencies": {
@@ -28,6 +32,7 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.0.0",
+    "newrelic": "^7.1.1",
     "nodemon": "^2.0.7"
   }
 }

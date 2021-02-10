@@ -14,46 +14,47 @@ class InfoBooking extends React.Component {
 
     this.state = {
       oldPrice: 87,
-      price: 0,
       cleaningFee: 30,
       serviceFee: 53,
       taxesFees: 64,
-      hostName: ''
+      lodgeDetails: {
+        hostName: '',
+        price: 0,
+        guests: 0,
+        bedrooms: 0,
+        beds: 0,
+        baths: 0
+      }
     }
 
     this.getLodgingData = this.getLodgingData.bind(this);
   }
 
-  getLodgingData (id = 1000, cb) {
-
-    let config = {
-      method: 'get',
-      url: '/lodge/?id=1000',
-      headers: { }
-    };
-
-    axios(config)
+  getLodgingData (id, cb) {
+    axios.get(`/lodge/${id}`)
     .then(function (response) {
-      console.log('in then');
       cb(response.data);
     })
     .catch(function (error) {
       console.log(error);
     });
-
   }
 
   componentDidMount () {
 
-    this.getLodgingData(1000, (data) => {
-      console.log(data);
+    this.getLodgingData(9999990, (data) => {
+      data = data[0];
+      console.log(data)
+      var details = {
+        price: data.lodgingDetails.price,
+        hostName: data.host.name,
+        guests: data.lodgingDetails.guests,
+        bedrooms: data.lodgingDetails.bedrooms,
+        beds: data.lodgingDetails.beds,
+        baths: data.lodgingDetails.baths,
+      }
       this.setState({
-        price: data[0].price,
-        oldPrice:  87,
-        cleaningFee:  30,
-        serviceFee:  53,
-        taxesFees:  64,
-        hostName: data[0].name
+        lodgeDetails: details
       })
     });
   }
@@ -68,7 +69,7 @@ class InfoBooking extends React.Component {
         {/* Info */}
 
         <div className={Styles['info']}>
-        <LodgingDetails hostName={this.state.hostName.split(' ')[0]}/>
+        <LodgingDetails lodge={this.state.lodgeDetails}/>
 
         </div>
 
@@ -77,11 +78,10 @@ class InfoBooking extends React.Component {
         <div className={Styles['booking']}>
         <Booking
           oldPrice ={this.state.oldPrice}
-          price ={this.state.price}
           cleaningFee ={this.state.cleaningFee}
           serviceFee ={this.state.serviceFee}
           taxesFees ={this.state.taxesFees}
-          hostName ={this.state.hostName}
+          lodge={this.state.lodgeDetails}
           />
         </div>
         <div>
