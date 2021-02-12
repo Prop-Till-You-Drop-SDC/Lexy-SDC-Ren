@@ -5,6 +5,7 @@ import DateTextInput from './Calander/DateTextInput.jsx';
 import GuestPanel from './Guests/GuestPanel.jsx';
 
 import SVGZoo from './SVGZoo.jsx';
+import axios from 'axios';
 
 
 import Styles from './topStyles/Booking.module.css';
@@ -127,12 +128,24 @@ class Booking extends React.Component {
 
   computeLineItems () {
     var nights = this.state.firstMoment && this.state.lastMoment ? this.state.lastMoment.diff(this.state.firstMoment, 'days') : 0;
-    var total = this.props.price * nights;
+    var total = this.props.lodge.price * nights;
 
 
     var finalTotal = total + this.props.cleaningFee + this.props.serviceFee + this.props.taxesFees;
 
     return {nights, total, finalTotal}
+  }
+
+  reserve() {
+    var lodgeID = Math.floor(Math.random() * 9999999)
+    // console.log(lodgeID)
+    axios.post(`/reserve/${lodgeID}`)
+    .then(function (response) {
+      console.log(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
 
@@ -150,7 +163,7 @@ class Booking extends React.Component {
         <div className={Styles['header-box']}>
           <div className={Styles['cost-box']}>
             <div className={Styles['old-cost']}>${this.props.oldPrice}</div>
-            <div className={Styles['new-cost']}>${this.props.price}</div>
+            <div className={Styles['new-cost']}>${this.props.lodge.price}</div>
             <div className={Styles['new-cost-label']}>/night</div>
           </div>
           <div className={Styles['review']}>
@@ -238,7 +251,7 @@ class Booking extends React.Component {
     />
 
 
-    <div className={Styles['reservation-button']}>
+        <div className={Styles['reservation-button']} onClick={this.reserve}>
         <div className={Styles["res-button"]}>
           <h3>Reserve</h3>
         </div>
@@ -250,7 +263,7 @@ class Booking extends React.Component {
 
       {/* Cost Breakdown  */}
     <div className={Styles['cost-breakdown']}>
-      <div className={Styles['line-item']}>${this.props.price} x {lineItems.nights} nights</div>
+      <div className={Styles['line-item']}>${this.props.lodge.price} x {lineItems.nights} nights</div>
       <div>${lineItems.total}</div>
       <div className={Styles['line-item']}>Cleaning fee</div>
       <div>${this.props.cleaningFee}</div>

@@ -1,40 +1,40 @@
-require('dotenv').config();
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const compression = require('compression')
-
-const db = require('./database');
+const compression = require('compression');
+const db = require('./database/queryMethods.js');
+const faker = require('faker');
+require('newrelic');
+const PORT = 3001;
 
 const app = express();
 
-app.use(compression())
-
+app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cors());
 
-app.use(cors({ origin: process.env.PROXY_ORIGIN }));
-
-// app.use(express.static(__dirname + '/../client/public'));
 app.use('/', express.static(`${__dirname}/../client/public`));
 app.use('/bundle', cors(), express.static(`${__dirname}/../client/public/bundle.js`));
 
-const PORT = process.env.PORT || 3001;
 
-app.get('/lodge', cors(), (req, res) => {
-  console.log(`req.query.id ${req.query.id}`);
-  const { id } = req.query;
+app.get('/lodge/:id', (req, res) => {
+  db.getLodging(Number(req.params.id), (result) => {
+    res.send(result)
+  })
+});
 
-  console.log(db);
-
-  db.getLodgingById(id)
-    .then((data) => {
-      res.json(data);
-    })
-    .catch((err) => {
-      res.json(err);
-    });
+app.post('/reserve/:id', (req, res) => {
+  var data = {
+    lodge_id: Number(req.params.id),
+    date_in: faker.date.past(10, new Date(2020, 0, 1)),
+    date_out: faker.date.past(10, new Date(2020, 0, 1)),
+    guest_id: 1992
+  }
+  console.log(data)
+  db.reserveLoge(data)
+  console.log('record inserted')
+  res.send('record inserted')
 });
 
 app.listen(PORT, () => {

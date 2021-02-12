@@ -13,11 +13,11 @@ function LodgingDetails(props) {
       <div className={Styles['info-header']}>
 
       <div className={Styles["lodging-header"]}>
-        Entire apartment hosted by {props.hostName}
+        Entire apartment hosted by {props.lodge.hostName}
       </div>
 
       <div className={Styles["loging-breakdown"]}>
-        2 guests · 1 bedroom · 1 bed · 1 bath
+        {props.lodge.guests} guests · {props.lodge.bedrooms} bedroom · {props.lodge.beds} bed · {props.lodge.baths} bath
       </div>
 
       <div className={Styles["lodging-header-psudo-boarder"]}></div>
