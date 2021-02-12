@@ -16,7 +16,7 @@ export let options ={
       stages: [
         { target: 10, duration: '30s' },
         { target: 100, duration: '30s' },
-        { target: 200, duration: '30s' }
+        { target: 500, duration: '30s' }
       ]
     }
   }
@@ -24,10 +24,8 @@ export let options ={
 
 export default function () {
   let random = Math.floor(Math.random() * 9999999) + 1
-  // let random2 = Math.floor(Math.random() * 9999999) + 1
-  let res = http.get(`http://localhost:3001/lodge/${random}`, { tags: { name: 'LodgeURL' } });
-  // let res2 = http.post(`http://localhost:3001/reserve/${random2}`, { tags: { name: 'ReserveURL' } });
+  let res = http.get(`http://localhost:8080/lodge/${random}`, { tags: { name: 'LodgeURL' } });
+
 
   errorRate.add(res.status >= 400);
-  // errorRate.add(res2.status >= 400);
   }

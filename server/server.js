@@ -4,8 +4,7 @@ const cors = require('cors');
 const compression = require('compression');
 const db = require('./database/queryMethods.js');
 const faker = require('faker');
-require('newrelic');
-const PORT = 3001;
+const PORT = 8080;
 
 const app = express();
 

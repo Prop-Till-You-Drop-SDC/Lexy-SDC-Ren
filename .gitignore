@@ -2,5 +2,5 @@ client/node_modules
 server/node_modules
 *.csv
 server/.env
-
 .vscode/
+client/public/bundle.js
